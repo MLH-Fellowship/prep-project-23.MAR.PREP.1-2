@@ -5,18 +5,29 @@ import logo from './mlh-prep.png'
 function App() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [city, setCity] = useState("New York City")
+  const [city, setCity] = useState("");
   const [results, setResults] = useState(null);
   
-  useEffect(() =>{
+  useEffect(() => {
     if (!navigator.geolocation) {
       console.log("Geolocation is not supported by your browser")
     } else {
       navigator.geolocation.getCurrentPosition(
         function(position){
-          console.log(position.coords.)
-          fetch()
-          
+          const {latitude, longitude} = position.coords;
+          fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${process.env.REACT_APP_APIKEY}`)
+            .then(res => res.json())
+            .then(
+              (result) => {
+                setIsLoaded(true);
+                setResults(result);
+                setCity(result.name);
+              },
+              (error) => {
+                setIsLoaded(true);
+                setError(error);
+              }
+            )
         },
         function(error) {
           console.error(`Error: ${error.message}`);
@@ -24,8 +35,13 @@ function App() {
       )   
     }
   }, [])
+
   useEffect(() => { 
-    fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=metric" + "&appid=" + process.env.REACT_APP_APIKEY)
+    if (city === "") {
+      return;
+    }
+
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${process.env.REACT_APP_APIKEY}`)
       .then(res => res.json())
       .then(
         (result) => {
