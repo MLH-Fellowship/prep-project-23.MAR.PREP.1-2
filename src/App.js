@@ -5,7 +5,7 @@ import logo from './mlh-prep.png'
 function App() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState("New York City");
   const [results, setResults] = useState(null);
   
   useEffect(() => {
