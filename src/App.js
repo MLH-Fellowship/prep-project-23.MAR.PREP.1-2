@@ -21,6 +21,7 @@ function App() {
               (result) => {
                 setIsLoaded(true);
                 setResults(result);
+                setCity(result.name);
               },
               (error) => {
                 setIsLoaded(true);
