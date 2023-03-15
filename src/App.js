@@ -22,12 +22,11 @@ function App() {
                 setIsLoaded(true);
                 setResults(result);
                 setCity(result.name);
-              },
-              (error) => {
+              })
+            .catch((error) => {
                 setIsLoaded(true);
                 setError(error);
-              }
-            )
+              })
         },
         function(error) {
           console.error(`Error: ${error.message}`);
@@ -37,10 +36,6 @@ function App() {
   }, [])
 
   useEffect(() => { 
-    if (city === "") {
-      return;
-    }
-
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${process.env.REACT_APP_APIKEY}`)
       .then(res => res.json())
       .then(
